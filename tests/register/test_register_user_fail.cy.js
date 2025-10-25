@@ -2,9 +2,9 @@
 
 import usuarios from '../../cypress/fixtures/valid_users.json'
 
-describe("Teste de login de usuarios", () => {
+describe("Teste tentando cadastrar duas vezes o mesmo usuario", () => {
 
-    it("Logando usuarios usuarios", () => {
+    it("Teste tentando cadastrar duas vezes o mesmo usuario", () => {
         
         var duracoes = []
 
@@ -16,23 +16,21 @@ describe("Teste de login de usuarios", () => {
                 inicio = Date.now()
             })
 
-            cy.visit("http://medidasincendio.test/login")
+            cy.visit("http://medidasincendio.test/register")
+
+            cy.get('input[id="name"]').type(usuario.nome)
 
             cy.get('input#email').type(usuario.email)
 
             cy.get('input#password').type(usuario.password)
 
+            cy.get('input#password_confirmation').type(usuario.password)
+
             cy.get('button[type="submit"]').click()
-
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should('be.visible')
-
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should("have.text", `${usuario.nome}`)
-
-            cy.url().should("eq", "http://medidasincendio.test/dashboard")
-
-            cy.get('a[href="http://medidasincendio.test/logout"]').then(($elemento) => {
-                $elemento[0].click()
-            })
+            
+            cy.get('ul.text-sm.text-red-600.space-y-1.mt-2 li').should('have.text', 'validation.unique')
+            
+            cy.reload()
             
             cy.then(() => {
                 var fim = Date.now()
@@ -52,5 +50,4 @@ describe("Teste de login de usuarios", () => {
 
     })
     
-
 })

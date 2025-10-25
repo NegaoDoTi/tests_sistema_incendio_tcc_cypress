@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
-import usuarios from '../../cypress/fixtures/valid_users.json'
+import usuarios from '../../cypress/fixtures/invalid_password_users.json'
 
-describe("Teste de login de usuarios", () => {
+describe("Teste de login com senha incorreta de usuarios", () => {
 
-    it("Logando usuarios usuarios", () => {
+    it("Logando usuarios com a senha incorreta", () => {
         
         var duracoes = []
 
@@ -20,19 +20,15 @@ describe("Teste de login de usuarios", () => {
 
             cy.get('input#email').type(usuario.email)
 
-            cy.get('input#password').type(usuario.password)
+            cy.get('input#password').type(usuario.senha)
 
             cy.get('button[type="submit"]').click()
 
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should('be.visible')
+            cy.get('ul[class="text-sm text-red-600 space-y-1 mt-2"] li').should('be.visible')
 
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should("have.text", `${usuario.nome}`)
+            cy.get('ul[class="text-sm text-red-600 space-y-1 mt-2"] li').should("have.text", 'auth.failed')
 
-            cy.url().should("eq", "http://medidasincendio.test/dashboard")
-
-            cy.get('a[href="http://medidasincendio.test/logout"]').then(($elemento) => {
-                $elemento[0].click()
-            })
+            cy.reload()
             
             cy.then(() => {
                 var fim = Date.now()

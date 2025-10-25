@@ -2,9 +2,9 @@
 
 import usuarios from '../../cypress/fixtures/valid_users.json'
 
-describe("Teste de login de usuarios", () => {
+describe("Teste de deletar contas dos usuarios", () => {
 
-    it("Logando usuarios usuarios", () => {
+    it("Teste de deletar contas dos usuarios", () => {
         
         var duracoes = []
 
@@ -24,16 +24,22 @@ describe("Teste de login de usuarios", () => {
 
             cy.get('button[type="submit"]').click()
 
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should('be.visible')
+            cy.visit('http://medidasincendio.test/profile')
 
-            cy.get('div.hidden.sm\\:flex.sm\\:items-center.sm\\:ml-6 > div > div:nth-child(1) > button > div:nth-child(1)').should("have.text", `${usuario.nome}`)
-
-            cy.url().should("eq", "http://medidasincendio.test/dashboard")
-
-            cy.get('a[href="http://medidasincendio.test/logout"]').then(($elemento) => {
-                $elemento[0].click()
+            cy.get('body > div > main > div > div > div:nth-child(3) > div > section > button').then(($delete) => {
+                $delete[0].click()
             })
+
+            cy.get('form[action="http://medidasincendio.test/profile"] input[id="password"]').then(($input_password) => {
+                $input_password[0].value = `${usuario.password}`
+            })
+
+            cy.get('form[action="http://medidasincendio.test/profile"] div[class="mt-6 flex justify-end"] button:nth-child(2)').click()
+
+            cy.wait(3)
             
+            cy.url().should('eq', 'http://medidasincendio.test/')
+
             cy.then(() => {
                 var fim = Date.now()
 
