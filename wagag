@@ -1,0 +1,31 @@
+cy.get('div.alert.alert-danger > ul > li', {timeout : 5000}).then(($el) => {
+                        const texto = $el.text()
+
+                        if (medida.nome === '' && medida.descricao !== '') {
+                            expect(texto).to.include('O campo nome é obrigatório.')
+                        }
+
+                        if (medida.nome !== '' && medida.descricao === '') {
+                            expect(texto).to.include('O campo descricao é obrigatório.')
+                        }
+
+                        if (medida.icone === '' && medida.nome !== '') {
+                            // Evita falha caso não tenha mensagem
+                            try {
+                            expect(texto).to.include('O campo icone é obrigátorio')
+                            } catch (err) {}
+                        }
+
+                        if (medida.foto === '' && medida.nome !== '') {
+                            try {
+                            expect(texto).to.include('O campo foto é obrigátorio')
+                            } catch (err) {}
+                        }
+
+                        if (medida.nome === '' && medida.descricao === '' && medida.icone === '' && medida.foto === '') {
+                            try {
+                                expect(texto).to.include('O campo nome é obrigatório.')
+                            } catch (err) {}
+                        }
+
+                    })

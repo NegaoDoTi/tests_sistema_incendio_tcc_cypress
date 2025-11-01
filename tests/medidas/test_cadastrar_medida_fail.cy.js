@@ -6,9 +6,9 @@ Cypress.on('uncaught:exception', (err, runnable) => {
     return false
 })
 
-describe("Teste cadastro de locais", () => {
+describe("Teste cadastro de locais repitidos", () => {
 
-    it("Teste cadastro de locais", () => {
+    it("Teste cadastro de locais repitidos", () => {
 
         cy.visit("http://medidasincendio.test/login")
 
